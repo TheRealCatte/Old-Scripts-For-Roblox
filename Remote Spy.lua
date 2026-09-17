@@ -1,0 +1,1 @@
+loadstring(game:HttpGet('https://raw.githubusercontent.com/0110Doe/Remote-Spy/main/main',true))()

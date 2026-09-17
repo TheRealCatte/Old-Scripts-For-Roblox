@@ -1,0 +1,2155 @@
+--Pmebge Exploit
+
+wait(game:IsLoaded())
+
+local plr = game.Players.LocalPlayer
+local Players = game.Players
+local ScriptEnded = false
+
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+
+local Window = OrionLib:MakeWindow({Name = "Pmebge Exploit :3", HidePremium = false, SaveConfig = true, ConfigFolder = "PmebgeExploitConfigs", IntroEnabled = true, IntroText = "Made by a furry :3", IntroIcon = "rbxassetid://12497888921", Icon = "rbxassetid://5205790785", CallBack = function() ScriptEnded = true end,})
+
+--Check
+if not (keyrelease) then
+	OrionLib:MakeNotification({
+		Name = "Whoops!",
+		Content = [[Looks like your executor does not support keypress and keyrelease!
+			The following will not fuction correctly!
+			Bred/Caik Farm,
+			Tree Farm,
+			Coin Farm
+			]],
+		Image = "rbxassetid://4483345998",
+		Time = 60
+	})
+end
+
+if game.PlaceId ~= "3411100258" then
+	OrionLib:MakeNotification({
+		Name = "Whoops!",
+		Content = "Looks like your not in the right game! Please play 'prtty much evry bordr gam evr' to use this script!",
+		Image = "rbxassetid://4483345998",
+		Time = 10
+	})
+end
+--
+HttpService = game:GetService("HttpService")
+_G.DataTable = {
+	Disable_Char_Force_Enable = false,
+	Force_Choosing_Bind = "P",
+	Spam_Heavy_Attack_Bind = "N",
+	Anti_Fling_Bind = "Q",
+	Coin_Farm_Bind = "L",
+	Tree_Farm_Bind = "K",
+	Bred_Caik_Farm_Bind = "J",
+	Disable_Force_Choosing = false,
+	Disable_Heavy_Attack_Spam = false,
+	Disable_Anti_Fling = false,
+	Disable_Coin_Farm = false,
+	Disable_Tree_Farm = false,
+	Disable_Bred_Caik_Farm = false,
+	Disable_Target_Team = false,
+	Item1 = "None",
+	Item2 = "None",
+	Item3 = "None",
+	Item4 = "None",
+	Item5 = "None",
+	Item6 = "None",
+	Item7 = "None",
+	Item8 = "None",
+	Item9 = "None",
+	Item10 = "None",
+}
+Data = _G.DataTable
+fileName = "Pmebge_Exploit_Data.txt" --Do not change if data is already made in-game
+
+function loadData()
+	if (readfile) then
+		if pcall(function() readfile(fileName) end) then
+			if readfile(fileName) ~= nil then
+				local success, response = pcall(function()
+					Data = HttpService:JSONDecode(readfile(fileName))
+				end)
+				if not success then
+					warn("Save data error:", response)
+					warn("Overwriting save file")
+					local json = HttpService:JSONEncode(Data)
+					writefile(fileName, json)
+				end
+			else
+				local json = HttpService:JSONEncode(Data)
+				read(fileName, json)
+			end
+		else
+			local json = HttpService:JSONEncode(Data)
+			writefile(fileName, json)
+		end
+	end
+end
+
+function saveData()
+	local json
+	if (writefile) then
+		json = HttpService:JSONEncode(Data)
+		writefile(fileName, json)
+	end
+end
+
+loadData()
+
+--Main
+local MainTab = Window:MakeTab({
+	Name = "Main",
+	Icon = "rbxassetid://5737425777",
+	PremiumOnly = false
+})
+
+MainTab:AddParagraph("In-Game Info",":3")
+
+MainTab:AddLabel("Game Version: "..game.PlaceVersion)
+local PlayerCountLabel = MainTab:AddLabel("Player Count: 0")
+local TimeUsingScriptLabel = MainTab:AddLabel("Time Using Script: 0")
+
+MainTab:AddParagraph("Script Info",":3")
+MainTab:AddParagraph("What does what",[[
+Force Choosing: Forces you to go back to choosing team
+
+Anti Fling: Forces you to always be up right (Useful while bomb jumping)
+
+Coin Farm (RISKY): Farms coins by using a cargo ship (Owned by you), buy resources (like iron, flowers, etc), place them down, and sell them for a profit
+[How Coin Farming is risky: This can be detected by a in-game admin or a player that can report you to a discord server. To prevent this, go to a small public server and/or go to one of the corners of the map]
+
+Tree Farm (RISKY): Teleports you to every tree in-game to chop down and give you A LOT of xp or logs you can sell for a decent amount.
+[How Tree Farming is risky: This could be detected by a in-game admin or a player that would most likely report you to the discord server. To prevent this, go to a small server (Ex: 7-1 player server)]
+
+Bred/Caik Farm (RISKY): Auto farms bred and/or caik (Depending on what settings you have enabled), and sells them for a profit.
+[How Bred/Caik Farming is risky: This can be detected by a in-game admin or player that would report you to a admin. To prevent this, go to a small public server (Ex: 7-1 player server)]
+
+Note: It is highly recommended to use an alt when using auto farms, unless you want to get rich and flex on your friends B)
+
+Disable Char Force: Disables players to have the game's custom character (Only effects you)
+
+Inf Stamina: Gives you inf stamina so you can run around without worrying about running out of stamina
+
+Teleport (RISKY): Teleports you to a place you want to go
+[How Teleporting is risky: This can be seen by a in-game admin or a player who would report to a admin. To prevent this, be sneeky and dont teleport to areas with a group of people near that area]
+
+Select Pet: Allows you to equip a pet (If you have any) without being at the pet shop
+{You need to own pets in order to use this feature!!! (They cost 50 robux each)}
+
+Select Team: Lets you pick a team that you can use to target, switch to, and etc
+
+Swich To Team (RISKY): Allows you to switch to a team quickly without going to choosing and select a team.
+(You must have access to the team in order for this feature to work)
+[How Switch To Team is risky: This can be seen by a admin or a player that would report you to the discord server. To prevent this, be careful using this.]
+
+Set Inventory: Sets inventory in a way you want it to be without setting it up manualy (This can be automated if 'Auto Set inventory' is enabled)
+
+Save Inventory: Saves inventory so you dont have to set it up again
+
+More stuff will be added soon! :33]])
+--
+
+--Enables
+local EnablesTab = Window:MakeTab({
+	Name = "Enables",
+	Icon = "rbxassetid://10385956836",
+	PremiumOnly = false
+})
+
+EnablesTab:AddLabel("Client-Sided")
+
+EnablesTab:AddToggle({
+	Name = "Disable Char Force",
+	Default = Data.Disable_Char_Force_Enable,
+	Callback = function(Value)
+		if Value == true then
+			plr.PlayerScripts.CustomCharacters.Disabled = true
+			Data.Disable_Char_Force_Enable = true
+		else
+			plr.PlayerScripts.CustomCharacters.Disabled = false
+			Data.Disable_Char_Force_Enable = false
+		end
+		saveData()
+	end
+})
+
+local InfStaminaEnabled = false
+EnablesTab:AddToggle({
+	Name = "Inf Stamina",
+	Defult = false,
+	Callback = function(Value)
+		if Value == true then
+			InfStaminaEnabled = true
+			
+			pcall(function()
+			while InfStaminaEnabled == true and ScriptEnded == false do wait()
+				local char = plr.Character
+				if char:FindFirstChild("Head") then
+					char.Stamina.Max.Value = 99999999999999
+					plr.PlayerGui.MainUI.TopBar.PlayerHealth.Stamina.Frame.BackgroundColor3 = Color3.fromRGB(182, 152, 0)
+					plr.PlayerGui.MainUI.TopBar.PlayerHealth.Stamina.TextLabel.Text = "INF STAMINA"
+					char.Stamina.Value = 99999999999999
+				else
+				    wait(1)
+				    local char = plr.Character
+				    if char:FindFirstChild("Head") then
+					char.Stamina.Max.Value = 99999999999999
+					plr.PlayerGui.MainUI.TopBar.PlayerHealth.Stamina.Frame.BackgroundColor3 = Color3.fromRGB(182, 152, 0)
+					plr.PlayerGui.MainUI.TopBar.PlayerHealth.Stamina.TextLabel.Text = "INF STAMINA"
+					char.Stamina.Value = 99999999999999
+					end
+				end
+			end
+			end)
+		else
+			InfStaminaEnabled = false
+			wait()
+			plr.Character.Stamina.Max.Value = 10
+			plr.PlayerGui.MainUI.TopBar.PlayerHealth.Stamina.Frame.BackgroundColor3 = Color3.fromRGB(152, 194, 219)
+			plr.PlayerGui.MainUI.TopBar.PlayerHealth.Stamina.TextLabel.Text = "STAMINA"
+			plr.Character.Stamina.Value = 10
+		end
+	end
+})
+
+EnablesTab:AddTextbox({
+	Name = "Set Max Stamina",
+	Default = "10",
+	TextDisappear = false,
+	Callback = function(Value)
+		local char = plr.Character
+		char.Stamina.Max.Value = Value
+	end
+})
+
+EnablesTab:AddTextbox({
+	Name = "Set Stamina",
+	Default = "10",
+	TextDisappear = false,
+	Callback = function(Value)
+		local char = plr.Character
+		char.Stamina.Value = Value
+	end
+})
+
+EnablesTab:AddLabel("Server-Sided")
+
+EnablesTab:AddTextbox({
+	Name = "Walk Speed",
+	Default = "16",
+	TextDisappear = false,
+	Callback = function(Value)
+		plr.Character.Humanoid.WalkSpeed = Value
+	end
+})
+
+EnablesTab:AddTextbox({
+	Name = "Jump Power",
+	Default = "50",
+	TextDisappear = false,
+	Callback = function(Value)
+		plr.Character.Humanoid.JumpPower = Value
+	end	  
+})
+
+local Pets = plr.Inventory.Pets
+local PetTable = {}
+for i,v in pairs(Pets:GetChildren()) do
+	table.insert(PetTable, v.Name)
+end
+table.insert(PetTable, "Remove")
+
+EnablesTab:AddDropdown({
+	Name = "Select Pet",
+	Default = plr.PlayerInfo.CurrentPet.Value,
+	Options = PetTable,
+	Callback = function(Value)
+		local args = {
+			[1] = Value
+		}
+
+		game:GetService("ReplicatedStorage").Remotes.WearPet:FireServer(unpack(args))
+	end    
+})
+
+local Teams = game:GetService("Teams")
+local TeamsTable = {}
+for i,v in pairs(Teams:GetChildren()) do
+	if v.Name ~= "HiddenTeams" then
+		table.insert(TeamsTable, v.Name)
+	else
+		for i,v in pairs(v:GetChildren()) do
+			table.insert(TeamsTable, v.Name)
+		end
+	end
+end
+
+local SelectedTeam = nil
+EnablesTab:AddDropdown({
+	Name = "Select Team",
+	Default = "peasant",
+	Options = TeamsTable,
+	Callback = function(Value)
+		SelectedTeam = Value
+	end    
+})
+
+EnablesTab:AddButton({
+	Name = "Switch To Team",
+	Callback = function()
+	    if plr.TeamColor ~= BrickColor.new("Medium stone grey") then
+	        game:GetService("ReplicatedStorage").Remotes.BackToChoosing:FireServer()
+	        wait(1)
+	    end
+	    
+	    local TeamSelectionModel = game:GetService("Workspace").Interactables.TeamSelection
+	    for i,v in pairs(TeamSelectionModel:GetChildren()) do
+	        if v:FindFirstChild(SelectedTeam) then
+	           local TpPart = v:FindFirstChild(SelectedTeam)
+	           plr.Character.HumanoidRootPart.CFrame = TpPart.CFrame
+	           plr.Character.HumanoidRootPart.CFrame = plr.Character.HumanoidRootPart.CFrame + Vector3.new(0,3,0)
+	        end
+	    end
+  	end    
+})
+
+local TargetTeamDisabled = false
+EnablesTab:AddButton({
+	Name = "Target Team",
+	Callback = function()
+	    if TargetTeamDisabled == true then
+	        OrionLib:MakeNotification({
+				Name = "Whoops!",
+				Content = "Target Team is disabled! (You can enable it in settings)",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			}) 
+			return 
+	    end
+        local keycodeMap = {
+		    ["1"] = 0x31,
+		}
+        keypress(keycodeMap["1"])
+        keyrelease(keycodeMap["1"])
+        wait(2.5)
+        for i,v in pairs(Players:GetPlayers()) do
+            if v.TeamColor == Teams:FindFirstChild(SelectedTeam).TeamColor then
+                for i=1,5 do
+                plr.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,2.5)
+                game:GetService("Players").LocalPlayer.Character.sword.HeavyAttack:FireServer()
+                wait(0.5)
+                plr.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,2.5)
+                game:GetService("Players").LocalPlayer.Character.sword.HeavyAttack:FireServer()
+                plr.Character.HumanoidRootPart.CFrame = v.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,2.5)
+                end
+            end
+        end
+  	end    
+})
+
+local SetInventoryPara = EnablesTab:AddParagraph("Set Inventory", "It MUST be items that you spawn with!")
+
+local LoadedWhileInChoosing = false
+if plr.TeamColor == BrickColor.new("Medium stone grey") then
+    SetInventoryPara:Set("Set Inventory", "Currently waiting for you to be on a team that isnt choosing,")
+    LoadedWhileInChoosing = true
+end
+
+local function SetInventory()
+    local ItemTable = {}
+    for i,v in pairs(plr.Backpack:GetChildren()) do
+        table.insert(ItemTable, v.Name)
+    end
+    table.insert(ItemTable, "None")
+
+local Item1 = "None"
+local ItemDropDown1 = EnablesTab:AddDropdown({
+	Name = "Item 1",
+	Default = Data.Item1,
+	Options = ItemTable,
+	Callback = function(Value)
+		Item1 = Value
+	end    
+})
+
+local Item2 = "None"
+local ItemDropDown2 = EnablesTab:AddDropdown({
+	Name = "Item 2",
+	Default = Data.Item2,
+	Options = ItemTable,
+	Callback = function(Value)
+		Item2 = Value
+	end    
+})
+
+local Item3 = "None"
+local ItemDropDown3 = EnablesTab:AddDropdown({
+	Name = "Item 3",
+	Default = Data.Item3,
+	Options = ItemTable,
+	Callback = function(Value)
+		Item3 = Value
+	end    
+})
+
+local Item4 = "None"
+local ItemDropDown4 = EnablesTab:AddDropdown({
+	Name = "Item 4",
+	Default = Data.Item4,
+	Options = ItemTable,
+	Callback = function(Value)
+		Item4 = Value
+	end    
+})
+
+local Item5 = "None"
+local ItemDropDown5 = EnablesTab:AddDropdown({
+	Name = "Item 5",
+	Default = Data.Item5,
+	Options = ItemTable,
+	Callback = function(Value)
+		Item5 = Value
+	end    
+})
+
+local Item6 = "None"
+local ItemDropDown6 = EnablesTab:AddDropdown({
+	Name = "Item 6",
+	Default = Data.Item6,
+	Options = ItemTable,
+	Callback = function(Value)
+		Item6 = Value
+	end    
+})
+
+local Item7 = "None"
+local ItemDropDown7 = EnablesTab:AddDropdown({
+	Name = "Item 7",
+	Default = Data.Item7,
+	Options = ItemTable,
+	Callback = function(Value)
+		Item7 = Value
+	end    
+})
+
+local Item8 = "None"
+local ItemDropDown8 = EnablesTab:AddDropdown({
+	Name = "Item 8",
+	Default = Data.Item8,
+	Options = ItemTable,
+	Callback = function(Value)
+		Item8 = Value
+	end    
+})
+
+local Item9 = "None"
+local ItemDropDown9 = EnablesTab:AddDropdown({
+	Name = "Item 9",
+	Default = Data.Item9,
+	Options = ItemTable,
+	Callback = function(Value)
+		Item9 = Value
+	end    
+})
+
+local Item10 = "None"
+local ItemDropDown10 = EnablesTab:AddDropdown({
+	Name = "Item 10",
+	Default = Data.Item10,
+	Options = ItemTable,
+	Callback = function(Value)
+		Item10 = Value
+	end    
+})
+
+local AutoSetInventory = false
+EnablesTab:AddToggle({
+	Name = "Auto Set Inventory",
+	Defult = false,
+	Callback = function(Value)
+		if Value == true then
+		    AutoSetInventory = false
+        else
+            AutoSetInventory = true
+        end
+	end
+})
+
+
+plr.CharacterRemoving:Connect(function()
+    plr.CharacterAdded:Connect(function()
+        if plr.TeamColor ~= BrickColor.new("Medium stone grey") and ScriptEnded == false then
+            ItemTable = {}
+            for i,v in pairs(plr.Backpack:GetChildren()) do
+                table.insert(ItemTable, v.Name)
+            end
+            table.insert(ItemTable, "None")
+            ItemDropDown1:Refresh(ItemTable,true)
+            ItemDropDown2:Refresh(ItemTable,true)
+            ItemDropDown3:Refresh(ItemTable,true)
+            ItemDropDown4:Refresh(ItemTable,true)
+            ItemDropDown5:Refresh(ItemTable,true)
+            ItemDropDown6:Refresh(ItemTable,true)
+            ItemDropDown7:Refresh(ItemTable,true)
+            ItemDropDown8:Refresh(ItemTable,true)
+            ItemDropDown9:Refresh(ItemTable,true)
+            ItemDropDown10:Refresh(ItemTable,true)
+            
+            wait(1)
+            if AutoSetInventory == false then
+            local Items = Instance.new("Folder", nil)
+            for i,v in pairs(plr.Backpack:GetChildren()) do
+                v.Parent = Items
+            end
+            if Item1 ~= "None" then
+                Items:FindFirstChild(Item1).Parent = plr.Backpack
+            end
+            if Item2 ~= "None" then
+                Items:FindFirstChild(Item2).Parent = plr.Backpack
+            end
+            if Item3 ~= "None" then
+                Items:FindFirstChild(Item3).Parent = plr.Backpack
+            end
+            if Item4 ~= "None" then
+                Items:FindFirstChild(Item4).Parent = plr.Backpack
+            end
+            if Item5 ~= "None" then
+                Items:FindFirstChild(Item5).Parent = plr.Backpack
+            end
+            if Item6 ~= "None" then
+                Items:FindFirstChild(Item6).Parent = plr.Backpack
+            end
+            if Item7 ~= "None" then
+                Items:FindFirstChild(Item7).Parent = plr.Backpack
+            end
+            if Item8 ~= "None" then
+                Items:FindFirstChild(Item8).Parent = plr.Backpack
+            end
+            if Item9 ~= "None" then
+                Items:FindFirstChild(Item9).Parent = plr.Backpack
+            end
+            if Item10 ~= "None" then
+                Items:FindFirstChild(Item10).Parent = plr.Backpack
+            end
+            for i,v in pairs(Items:GetChildren()) do
+                v.Parent = plr.Backpack
+            end
+            Items:Remove()
+            end
+        end
+    end)
+end)
+
+EnablesTab:AddButton({
+	Name = "Set Inventory",
+	Callback = function()
+	    local Items = Instance.new("Folder", nil)
+            for i,v in pairs(plr.Backpack:GetChildren()) do
+                v.Parent = Items
+            end
+            if Item1 ~= "None" then
+                Items:FindFirstChild(Item1).Parent = plr.Backpack
+            end
+            if Item2 ~= "None" then
+                Items:FindFirstChild(Item2).Parent = plr.Backpack
+            end
+            if Item3 ~= "None" then
+                Items:FindFirstChild(Item3).Parent = plr.Backpack
+            end
+            if Item4 ~= "None" then
+                Items:FindFirstChild(Item4).Parent = plr.Backpack
+            end
+            if Item5 ~= "None" then
+                Items:FindFirstChild(Item5).Parent = plr.Backpack
+            end
+            if Item6 ~= "None" then
+                Items:FindFirstChild(Item6).Parent = plr.Backpack
+            end
+            if Item7 ~= "None" then
+                Items:FindFirstChild(Item7).Parent = plr.Backpack
+            end
+            if Item8 ~= "None" then
+                Items:FindFirstChild(Item8).Parent = plr.Backpack
+            end
+            if Item9 ~= "None" then
+                Items:FindFirstChild(Item9).Parent = plr.Backpack
+            end
+            if Item10 ~= "None" then
+                Items:FindFirstChild(Item10).Parent = plr.Backpack
+            end
+            for i,v in pairs(Items:GetChildren()) do
+                v.Parent = plr.Backpack
+            end
+            Items:Remove()
+  	end    
+})
+
+EnablesTab:AddButton({
+	Name = "Save Inventory",
+	Callback = function()
+	    Data.Item1 = Item1
+	    Data.Item2 = Item2
+	    Data.Item3 = Item3
+	    Data.Item4 = Item4
+	    Data.Item5 = Item5
+	    Data.Item6 = Item6
+	    Data.Item7 = Item7
+	    Data.Item8 = Item8
+	    Data.Item9 = Item9
+    Data.Item10 = Item10
+    saveData()
+end
+})
+end
+
+if LoadedWhileInChoosing == false then
+    SetInventory()
+else
+    local WaitFunction = Instance.new("BindableEvent")
+    WaitFunction.Event:Connect(function()
+        repeat wait() until plr.TeamColor ~= BrickColor.new("Medium stone grey")
+        wait(1)
+        SetInventory()
+        SetInventoryPara:Set("Set Inventory", "It MUST be items that you spawn with!")
+    end)
+    WaitFunction:Fire()
+end
+
+--
+
+--KeyBinds
+local KeyBindsTab = Window:MakeTab({
+	Name = "KeyBinds",
+	Icon = "rbxassetid://10736453903",
+	PremiumOnly = false
+})
+
+local ForceChoosingDisabled = false
+local ForceChooseBind = KeyBindsTab:AddBind({
+	Name = "Force Choosing",
+	Default = Data.Force_Choosing_Bind,
+	Hold = false,
+	Callback = function()
+		if ForceChoosingDisabled == true then 
+			OrionLib:MakeNotification({
+				Name = "Whoops!",
+				Content = "Force Choosing is turned off! (You can turn it on in settings)",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			}) 
+			return 
+		end
+
+		game:GetService("ReplicatedStorage").Remotes.BackToChoosing:FireServer()
+	end
+})
+
+KeyBindsTab:AddTextbox({
+	Name = "Force Choosing KeyBind",
+	Default = Data.Force_Choosing_Bind,
+	TextDisappear = false,
+	Callback = function(Value)
+		Data.Force_Choosing_Bind = Value
+		ForceChooseBind:Set(Enum.KeyCode[Value])
+		saveData()
+	end	  
+})
+
+local SpamHeavyAttackDisabled = false
+local HeavyAttackBind = KeyBindsTab:AddBind({
+	Name = "Heavy Attack Spam",
+	Default = Data.Spam_Heavy_Attack_Bind,
+	Hold = false,
+	Callback = function()
+		if SpamHeavyAttackDisabled == true then
+			OrionLib:MakeNotification({
+				Name = "Whoops!",
+				Content = "Heavy Attack Spam is turned off! (You can turn it on in settings)",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			}) 
+			return 
+		end
+
+		game:GetService("Players").LocalPlayer.Character.sword.HeavyAttack:FireServer()
+	end
+})
+
+KeyBindsTab:AddTextbox({
+	Name = "Heavy Attack Spam KeyBind",
+	Default = Data.Spam_Heavy_Attack_Bind,
+	TextDisappear = false,
+	Callback = function(Value)
+		Data.Spam_Heavy_Attack_Bind = Value
+		HeavyAttackBind:Set(Enum.KeyCode[Value])
+		saveData()
+	end
+})
+
+local AntiFlingDisabled = false
+local AntiFlingActive = false
+local AntiFlingBind = KeyBindsTab:AddBind({
+	Name = "Anti Fling",
+	Default = Data.Anti_Fling_Bind,
+	Hold = false,
+	Callback = function()
+		if AntiFlingDisabled == true then 
+			OrionLib:MakeNotification({
+				Name = "Whoops!",
+				Content = "Anti Fling is turned off! (You can turn it on in settings)",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			}) 
+			return 
+		end
+		if AntiFlingActive == false then
+			AntiFlingActive = true
+			OrionLib:MakeNotification({
+				Name = "Enabled",
+				Content = "Anti Fling Enabled :3",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			})
+
+			pcall(function()
+				while AntiFlingActive == true and ScriptEnded == false do
+					wait()
+					local char = game.Players.LocalPlayer.Character
+					print(char.HumanoidRootPart.Orientation)
+					if char.HumanoidRootPart.Orientation.X ~= 0 then
+						char.Humanoid.Sit = true
+						wait()
+						char.Humanoid.Sit = false
+					end
+				end
+			end)
+		else
+			AntiFlingActive = false
+			OrionLib:MakeNotification({
+				Name = "Disabled",
+				Content = "Anti Fling Disabled :3",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			})
+		end 
+	end
+})
+
+KeyBindsTab:AddTextbox({
+	Name = "Anti Fling KeyBind",
+	Default = Data.Anti_Fling_Bind,
+	TextDisappear = false,
+	Callback = function(Value)
+		Data.Anti_Fling_Bind = Value
+		AntiFlingBind:Set(Enum.KeyCode[Value])
+		saveData()
+	end	  
+})
+
+local CoinFarmDisabled = false
+local CoinFarmActive = false
+local CoinFarmBind = KeyBindsTab:AddBind({
+	Name = "Coin Farm",
+	Default = Data.Coin_Farm_Bind,
+	Hold = false,
+	Callback = function()
+		if CoinFarmDisabled == true then 
+			OrionLib:MakeNotification({
+				Name = "Whoops!",
+				Content = "Coin Farming is turned off! (You can turn it on in settings)",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			}) 
+			return 
+		end
+
+		local keycodeMap = {
+			["1"] = 0x31,
+		}
+
+		local function Sell(itemName)
+			local args = {
+				[1] = itemName,
+				[2] = false,
+				[3] = false
+			}
+
+			game:GetService("ReplicatedStorage").Remotes.Shop:FireServer(unpack(args))
+		end
+
+		local function Buy(itemName)
+			local args = {
+				[1] = itemName,
+				[2] = false,
+				[3] = true
+			}
+
+			game:GetService("ReplicatedStorage").Remotes.Shop:FireServer(unpack(args))
+		end
+
+		if CoinFarmActive == false then
+			CoinFarmActive = true
+			OrionLib:MakeNotification({
+				Name = "Enabled",
+				Content = "Coin Farm enabled :3",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			})
+
+			local function FindCargoBoats(model)
+				local C = model:GetChildren()
+				for _, item in pairs(C) do
+					if CoinFarmActive == false then
+						local ItemC = item:GetChildren()
+						local Number = 0
+						for i=1,#ItemC do Number=Number+1 end
+						if Number ~= 0 then
+							FindCargoBoats(item)
+						end
+						if item.Name == "CargoShip" and item:FindFirstChild("Owner").Value == plr.Name then
+							while CoinFarmActive == true and ScriptEnded == false do wait()
+								local CargoHold = item:FindFirstChild("CargoHold")
+								Buy("iron")
+								keypress(keycodeMap["1"])
+								wait(4)
+								keyrelease(keycodeMap["1"])
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(CargoHold.Position)
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0,3,0)
+								wait(1)
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(CargoHold.Position)
+								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0,3,0)
+								Sell("iron")
+							end
+						end
+					end
+				end
+			end
+			FindCargoBoats(workspace)
+		else
+			CoinFarmActive = false
+			OrionLib:MakeNotification({
+				Name = "Disabled",
+				Content = "Coin Farm Disabled :3",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			})
+		end
+	end
+})
+
+KeyBindsTab:AddTextbox({
+	Name = "Coin Farm KeyBind",
+	Default = Data.Coin_Farm_Bind,
+	TextDisappear = false,
+	Callback = function(Value)
+		Data.Coin_Farm_Bind = Value
+		CoinFarmBind:Set(Enum.KeyCode[Value])
+		saveData()
+	end	  
+})
+
+local TreeFarmDisabled = false
+local TreeFarmActive = false
+local TreeFarmBind = KeyBindsTab:AddBind({
+	Name = "Tree Farm",
+	Default = Data.Tree_Farm_Bind,
+	Hold = false,
+	Callback = function()
+		if TreeFarmDisabled == true then 
+			OrionLib:MakeNotification({
+				Name = "Whoops!",
+				Content = "Tree Farming is turned off! (You can turn it on in settings)",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			}) 
+			return 
+		end
+
+		local keycodeMap = {
+			["f"] = 0x46,
+		}
+
+		local function Sell(itemName)
+			local args = {
+				[1] = itemName,
+				[2] = false,
+				[3] = false
+			}
+
+			game:GetService("ReplicatedStorage").Remotes.Shop:FireServer(unpack(args))
+		end
+
+		if TreeFarmActive == false then
+			TreeFarmActive = true
+			OrionLib:MakeNotification({
+				Name = "Disabled",
+				Content = "Tree Farm Disabled :3",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			})
+
+			local function FindTrees(model)
+				local C = model:GetChildren()
+				for _, item in pairs(C) do
+					if TreeFarmActive == true then
+						local ItemC = item:GetChildren()
+						local Number = 0
+						for i=1,#ItemC do Number=Number+1 end
+						if Number ~= 0 then
+							FindTrees(item)
+						end
+						if item.Parent.Name:find("Tree") and not item.Parent.Name:find("Palm") then
+							if item.Name == "Base" and item:FindFirstChild("ChopTree") then
+								plr.Character.HumanoidRootPart.CFrame = item.CFrame
+								plr.Character.HumanoidRootPart.CFrame = plr.Character.HumanoidRootPart.CFrame + Vector3.new(2,0,0)
+								wait(0.1)
+								keypress(keycodeMap["f"])
+								wait()
+								keyrelease(keycodeMap["f"])
+								keypress(keycodeMap["f"])
+								wait()
+								keyrelease(keycodeMap["f"]) 
+							elseif item.Name == "Wood" and item:FindFirstChild("ChopTree") then
+								plr.Character.HumanoidRootPart.CFrame = item.CFrame
+								plr.Character.HumanoidRootPart.CFrame = plr.Character.HumanoidRootPart.CFrame + Vector3.new(2,0,0)
+								wait(0.1)
+								keypress(keycodeMap["f"])
+								wait()
+								keyrelease(keycodeMap["f"])
+								keypress(keycodeMap["f"])
+								wait()
+								keyrelease(keycodeMap["f"]) 
+							end
+						end
+					end
+				end
+			end
+
+			FindTrees(workspace)
+		else
+			TreeFarmActive = false
+			OrionLib:MakeNotification({
+				Name = "Disabled",
+				Content = "Tree Farm Disabled :3",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			})
+		end
+	end
+})
+
+KeyBindsTab:AddTextbox({
+	Name = "Tree Farm KeyBind",
+	Default = Data.Tree_Farm_Bind,
+	TextDisappear = false,
+	Callback = function(Value)
+		Data.Tree_Farm_Bind = Value
+		TreeFarmBind:Set(Enum.KeyCode[Value])
+		saveData()
+	end	  
+})
+
+local BredCaikFarmDisabled = false
+local BredCaikFarmActive = false
+local BredCaikFarmBind = KeyBindsTab:AddBind({
+	Name = "Bred/Caik Farm",
+	Default = Data.Bred_Caik_Farm_Bind,
+	Hold = false,
+	Callback = function()
+		if BredCaikFarmDisabled == true then 
+			OrionLib:MakeNotification({
+				Name = "Whoops!",
+				Content = "Bred/Caik Farming is turned off! (You can turn it on in settings)",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			}) 
+			return 
+		end
+
+		local keycodeMap = {
+			["1"] = 0x31,
+			["f"] = 0x46,
+		}
+
+		local function Sell(itemName)
+			local args = {
+				[1] = itemName,
+				[2] = false,
+				[3] = false
+			}
+
+			game:GetService("ReplicatedStorage").Remotes.Shop:FireServer(unpack(args))
+		end
+
+		if BredCaikFarmActive == false then
+			BredCaikFarmActive = true
+			OrionLib:MakeNotification({
+				Name = "Enabled",
+				Content = "Bred/Caik Farm Enabled :3",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			})
+
+			while BredCaikFarmActive == true and ScriptEnded == false do
+				local char = plr.Character
+				char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(9,21,-1893))
+				wait(0.5)
+				keypress(keycodeMap["f"])
+				wait()
+				keyrelease(keycodeMap["f"])
+				if char.Humanoid.WalkSpeed ~= 0 then
+					wait(0.5)
+					keypress(keycodeMap["f"])
+					wait()
+					keyrelease(keycodeMap["f"])
+				end
+				repeat wait() until plr.Backpack:FindFirstChild("uncooked bred")
+				wait(0.5)
+				keypress(keycodeMap["1"])
+				wait()
+				keyrelease(keycodeMap["1"])
+				wait()
+				keypress(keycodeMap["1"])
+				wait()
+				keyrelease(keycodeMap["1"])
+				wait()
+				keypress(keycodeMap["1"])
+				wait()
+				keyrelease(keycodeMap["1"])
+				char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(7,21,-1881))
+				repeat wait() until char:FindFirstChild("uncooked bred").Handle:FindFirstChildOfClass("Fire")
+				char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(8,21,-1873))
+				keypress(keycodeMap["1"])
+				wait()
+				keyrelease(keycodeMap["1"])
+				keypress(keycodeMap["f"])
+				wait()
+				keyrelease(keycodeMap["f"])
+				if char.Humanoid.WalkSpeed ~= 0 then
+					wait(0.5)
+					keypress(keycodeMap["f"])
+					wait()
+					keyrelease(keycodeMap["f"])
+				end
+				repeat wait() until plr.Backpack:FindFirstChild("caik")
+				wait()
+				pcall(function() Sell("caik") wait() Sell("bred") wait() Sell("caik") wait() Sell("bred") end)
+			end
+		else
+			BredCaikFarmActive = false
+			OrionLib:MakeNotification({
+				Name = "Disabled",
+				Content = "Bred/Caik Farm Disabled :3",
+				Image = "rbxassetid://4483345998",
+				Time = 5
+			})
+		end
+	end
+})
+
+KeyBindsTab:AddTextbox({
+	Name = "Bred/Caik Farm KeyBind",
+	Default = Data.Bred_Caik_Farm_Bind,
+	TextDisappear = false,
+	Callback = function(Value)
+		Data.Bred_Caik_Farm_Bind = Value
+		BredCaikFarmBind:Set(Enum.KeyCode[Value])
+		saveData()
+	end	  
+})
+
+KeyBindsTab:AddParagraph("Note","The reason why its like this is because the Ui Build script is horrible at saving data, so I made my own data saver or whatever the hell you call it")
+--
+
+--Teleports
+local TeleportTab = Window:MakeTab({
+	Name = "Teleport",
+	Icon = "rbxassetid://12941020168",
+	PremiumOnly = false
+})
+
+TeleportTab:AddLabel("Spawns")
+
+TeleportTab:AddButton({
+	Name = "Choosing Spawn",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-0, 5, -5019))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Vr Choosing Spawn",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-1499, 6, -4992))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Peasant Spawn",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-381, 23, 18))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Admisson Spawn",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-1009, 32, -98))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Pirate Spawn",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-46, 20, -1920))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Viking Spawn",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(911, 9, 30))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Citzen Spawn",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-1329, 34, -54))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Sorcerer Spawn",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-463, -194, -437))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Witch Spawn",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(632, 9, 258))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Medic Spawn",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-1136, 33, 268))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Knigt Spawn",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-399, -194, 210))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Noob Lord Spawn",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-229, -165, -231))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Admin Spawn",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-417, -193, -270))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Viking Chieftain Spawn",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(254, -193, 7))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Viking King Spawn",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(1350, 7, 1079))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Knigt Commander Spawn",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-144, -165, -161))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Noob King Spawn",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-157, -165, -232))
+	end    
+})
+
+TeleportTab:AddLabel("Places")
+
+TeleportTab:AddButton({
+	Name = "Border",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-965, 32, -12))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Castle",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-1375, 56, -370))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Big Tree",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-1367, 86, -54))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Main Island Shops",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-1263, 32, 35))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Main Island Dock 1",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-459, 9, 279))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Main Island Dock 2",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-315, 9, -300))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Brick God",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(-1521, 105, 394))
+	end    
+})
+
+TeleportTab:AddButton({
+	Name = "Evil Brick God",
+	Callback = function()
+		local char = plr.Character
+		char.HumanoidRootPart.CFrame = CFrame.new(Vector3.new(1125, 33, 349))
+	end    
+})
+
+--Game Editor
+local GameEditorTab = Window:MakeTab({
+	Name = "Game Editor",
+	Icon = "rbxassetid://29402763",
+	PremiumOnly = false
+})
+
+GameEditorTab:AddButton({
+	Name = "F3X (Client-Sided)",
+	Callback = function()
+		loadstring(game:GetObjects("rbxassetid://6695644299")[1].Source)()
+	end    
+})
+
+GameEditorTab:AddLabel("Ui")
+
+GameEditorTab:AddColorpicker({
+	Name = "Stamina Bar Color",
+	Default = Color3.fromRGB(152, 194, 219),
+	Callback = function(Value)
+		plr.PlayerGui.MainUI.TopBar.PlayerHealth.Stamina.Frame.BackgroundColor3 = Value
+	end	  
+})
+
+GameEditorTab:AddTextbox({
+	Name = "Stamina Text",
+	Default = "STAMINA",
+	TextDisappear = false,
+	Callback = function(Value)
+		plr.PlayerGui.MainUI.TopBar.PlayerHealth.Stamina.TextLabel.Text = Value
+	end	  
+})
+
+local RainbowStaminaActive = false
+GameEditorTab:AddButton({
+	Name = "Rainbow Stamina",
+	Callback = function()
+		pcall(function()
+			if RainbowStaminaActive == false then
+				RainbowStaminaActive = true
+				while RainbowStaminaActive == true and ScriptEnded == false do wait()
+					local text = plr.PlayerGui.MainUI.TopBar.PlayerHealth.Stamina.TextLabel
+					local bar = plr.PlayerGui.MainUI.TopBar.PlayerHealth.Stamina.Frame
+					text.TextColor3 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255))
+					bar.BackgroundColor3 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255))
+				end
+			else
+				RainbowStaminaActive = false
+			end
+		end)
+	end    
+})
+
+GameEditorTab:AddButton({
+	Name = "Reset Stamina",
+	Callback = function()
+		local text = plr.PlayerGui.MainUI.TopBar.PlayerHealth.Stamina.TextLabel
+		local bar = plr.PlayerGui.MainUI.TopBar.PlayerHealth.Stamina.Frame
+		text.TextColor3 = Color3.fromRGB(255,255,255)
+		text.Text = "STAMINA"
+		bar.BackgroundColor3 = Color3.fromRGB(152, 194, 219)
+	end   
+})
+
+GameEditorTab:AddColorpicker({
+	Name = "Hungar Bar Color",
+	Default = Color3.fromRGB(121, 85, 72),
+	Callback = function(Value)
+		plr.PlayerGui.MainUI.TopBar.PlayerHealth.Hunger.Frame.BackgroundColor3 = Value
+	end	  
+})
+
+GameEditorTab:AddTextbox({
+	Name = "Hungar Text",
+	Default = "HUNGAR",
+	TextDisappear = false,
+	Callback = function(Value)
+		plr.PlayerGui.MainUI.TopBar.PlayerHealth.Hunger.TextLabel.Text = Value
+	end	  
+})
+
+local RainbowHungarActive = false
+GameEditorTab:AddButton({
+	Name = "Rainbow Hungar",
+	Callback = function()
+		pcall(function()
+			if RainbowHungarActive == false then
+				RainbowHungarActive = true
+				while RainbowHungarActive == true and ScriptEnded == false do wait()
+					local text = plr.PlayerGui.MainUI.TopBar.PlayerHealth.Hunger.TextLabel
+					local bar = plr.PlayerGui.MainUI.TopBar.PlayerHealth.Hunger.Frame
+					text.TextColor3 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255))
+					bar.BackgroundColor3 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255))
+				end
+			else
+				RainbowHungarActive = false
+			end
+		end)
+	end    
+})
+
+GameEditorTab:AddButton({
+	Name = "Reset Hungar",
+	Callback = function()
+		local text = plr.PlayerGui.MainUI.TopBar.PlayerHealth.Hunger.TextLabel
+		local bar = plr.PlayerGui.MainUI.TopBar.PlayerHealth.Hunger.Frame
+		text.TextColor3 = Color3.fromRGB(255,255,255)
+		text.Text = "HUNGAR"
+		bar.BackgroundColor3 = Color3.fromRGB(121, 85, 72)
+	end    
+})
+
+GameEditorTab:AddLabel("In-Game")
+
+GameEditorTab:AddColorpicker({
+	Name = "Displayname Color",
+	Default = nil,
+	Callback = function(Value)
+		local char = plr.Character
+		char.Head.NameGui.Frame.DisplayName.TextColor3 = Value
+	end	  
+})
+
+GameEditorTab:AddTextbox({
+	Name = "Displayname Text",
+	Default = plr.Character.Head.NameGui.Frame.DisplayName.Text,
+	TextDisappear = false,
+	Callback = function(Value)
+		local char = plr.Character
+		char.Head.NameGui.Frame.DisplayName.Text = Value
+	end	  
+})
+
+GameEditorTab:AddColorpicker({
+	Name = "Username Color",
+	Default = nil,
+	Callback = function(Value)
+		local char = plr.Character
+		char.Head.NameGui.Frame.Username.TextColor3 = Value
+	end	  
+})
+
+GameEditorTab:AddTextbox({
+	Name = "Username Text",
+	Default = plr.Character.Head.NameGui.Frame.Username.Text,
+	TextDisappear = false,
+	Callback = function(Value)
+		local char = plr.Character
+		char.Head.NameGui.Frame.Username.Text = Value
+	end	  
+})
+
+local RainbowNameActive = false
+GameEditorTab:AddButton({
+	Name = "Rainbow Name",
+	Callback = function()
+		pcall(function()
+			if RainbowNameActive == false then
+				RainbowNameActive = true
+				pcall(function()
+					while RainbowNameActive == true and ScriptEnded == false do
+						wait()
+						if workspace:FindFirstChild(plr.Name) then
+							local char = plr.Character
+							if char:FindFirstChild("Head") then
+								char.Head.NameGui.Frame.DisplayName.TextColor3 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255))
+								char.Head.NameGui.Frame.Username.TextColor3 = Color3.fromRGB(math.random(0,255),math.random(0,255),math.random(0,255))
+							end
+						end
+					end
+				end)
+			else
+				RainbowNameActive = false
+			end
+		end)
+	end    
+})
+
+GameEditorTab:AddLabel("NameGui Badges")
+
+local PremiumBadgeEnabled = false
+GameEditorTab:AddToggle({
+	Name = "Premium Badge",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			PremiumBadgeEnabled = true
+			pcall(function()
+				while PremiumBadgeEnabled == true and ScriptEnded == false do
+					wait()
+					if workspace:FindFirstChild(plr.Name) then
+						local char = plr.Character
+						if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.Premium.Visible == false then
+								char.Head.NameGui.Frame.Badges.Premium.Visible = true
+							end
+						else
+						    wait(1)
+						    if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.Premium.Visible == false then
+								char.Head.NameGui.Frame.Badges.Premium.Visible = true
+							end
+							end
+						end
+					end
+				end
+			end)
+		else
+			PremiumBadgeEnabled = false
+			wait()
+			plr.Character.Head.NameGui.Frame.Badges.Premium.Visible = false
+			plr.Character.Head.NameGui.Frame.Badges.Visible = false
+		end
+	end
+})
+
+local RobloxAdminBadgeEnabled = false
+GameEditorTab:AddToggle({
+	Name = "Roblox Admin Badge",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			RobloxAdminBadgeEnabled = true
+			pcall(function()
+				while RobloxAdminBadgeEnabled == true and ScriptEnded == false do
+					wait()
+					if workspace:FindFirstChild(plr.Name) then
+						local char = plr.Character
+						if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.RobloxAdmin.Visible == false then
+								char.Head.NameGui.Frame.Badges.RobloxAdmin.Visible = true
+							end
+							else
+							    wait(1)
+							    if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.RobloxAdmin.Visible == false then
+								char.Head.NameGui.Frame.Badges.RobloxAdmin.Visible = true
+							end
+							end
+						end
+					end
+				end
+			end)
+		else
+			RobloxAdminBadgeEnabled = false
+			wait()
+			plr.Character.Head.NameGui.Frame.Badges.RobloxAdmin.Visible = false
+			plr.Character.Head.NameGui.Frame.Badges.Visible = false
+		end
+	end
+})
+
+local NitroBoosterBadgeEnabled = false
+GameEditorTab:AddToggle({
+	Name = "Nitro Booster Badge",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			NitroBoosterBadgeEnabled = true
+			pcall(function()
+				while NitroBoosterBadgeEnabled == true and ScriptEnded == false do
+					wait()
+					if workspace:FindFirstChild(plr.Name) then
+						local char = plr.Character
+						if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.NitroBooster.Visible == false then
+								char.Head.NameGui.Frame.Badges.NitroBooster.Visible = true
+							end
+							else
+							    wait(1)
+							    	if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.NitroBooster.Visible == false then
+								char.Head.NameGui.Frame.Badges.NitroBooster.Visible = true
+							end
+							end
+						end
+					end
+				end
+			end)
+		else
+			NitroBoosterBadgeEnabled = false
+			wait()
+			plr.Character.Head.NameGui.Frame.Badges.NitroBooster.Visible = false
+			plr.Character.Head.NameGui.Frame.Badges.Visible = false
+		end
+	end
+})
+
+local OwnerBadgeEnabled = false
+GameEditorTab:AddToggle({
+	Name = "Owner Badge",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			OwnerBadgeEnabled = true
+			pcall(function()
+				while OwnerBadgeEnabled == true and ScriptEnded == false do
+					wait()
+					if workspace:FindFirstChild(plr.Name) then
+						local char = plr.Character
+						if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.Owner.Visible == false then
+								char.Head.NameGui.Frame.Badges.Owner.Visible = true
+							end
+						else
+						    wait(1)
+						    if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.Owner.Visible == false then
+								char.Head.NameGui.Frame.Badges.Owner.Visible = true
+							end
+						    end
+					    end
+					end
+				end
+			end)
+		else
+			OwnerBadgeEnabled = false
+			wait()
+			plr.Character.Head.NameGui.Frame.Badges.Owner.Visible = false
+			plr.Character.Head.NameGui.Frame.Badges.Visible = false
+		end
+	end
+})
+
+local DeveloperBadgeEnabled = false
+GameEditorTab:AddToggle({
+	Name = "Developer Badge",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			DeveloperBadgeEnabled = true
+			pcall(function()
+				while DeveloperBadgeEnabled == true and ScriptEnded == false do
+					wait()
+					if workspace:FindFirstChild(plr.Name) then
+						local char = plr.Character
+						if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.Developer.Visible == false then
+								char.Head.NameGui.Frame.Badges.Developer.Visible = true
+							end
+							else
+							    wait(1)
+							    	if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.Developer.Visible == false then
+								char.Head.NameGui.Frame.Badges.Developer.Visible = true
+							end
+							end
+						end
+					end
+				end
+			end)
+		else
+			DeveloperBadgeEnabled = false
+			wait()
+			plr.Character.Head.NameGui.Frame.Badges.Developer.Visible = false
+			plr.Character.Head.NameGui.Frame.Badges.Visible = false
+		end
+	end
+})
+
+local VideoStarBadgeEnabled = false
+GameEditorTab:AddToggle({
+	Name = "Video Star Badge",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			VideoStarBadgeEnabled = true
+			pcall(function()
+				while VideoStarBadgeEnabled == true and ScriptEnded == false do
+					wait()
+					if workspace:FindFirstChild(plr.Name) then
+						local char = plr.Character
+						if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.VideoStar.Visible == false then
+								char.Head.NameGui.Frame.Badges.VideoStar.Visible = true
+							end
+							else
+							    wait(1)
+							    if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.VideoStar.Visible == false then
+								char.Head.NameGui.Frame.Badges.VideoStar.Visible = true
+							end
+							end
+						end
+					end
+				end
+			end)
+		else
+			VideoStarBadgeEnabled = false
+			wait()
+			plr.Character.Head.NameGui.Frame.Badges.VideoStar.Visible = false
+			plr.Character.Head.NameGui.Frame.Badges.Visible = false
+		end
+	end
+})
+
+local AdminBadgeEnabled = false
+GameEditorTab:AddToggle({
+	Name = "Admin Badge",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			AdminBadgeEnabled = true
+			pcall(function()
+				while AdminBadgeEnabled == true and ScriptEnded == false do
+					wait()
+					if workspace:FindFirstChild(plr.Name) then
+						local char = plr.Character
+						if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.Admin.Visible == false then
+								char.Head.NameGui.Frame.Badges.Admin.Visible = true
+							end
+							else
+							    wait(1)
+							    if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.Admin.Visible == false then
+								char.Head.NameGui.Frame.Badges.Admin.Visible = true
+							end
+							end
+						end
+					end
+				end
+			end)
+		else
+			AdminBadgeEnabled = false
+			wait()
+			plr.Character.Head.NameGui.Frame.Badges.Admin.Visible = false
+			plr.Character.Head.NameGui.Frame.Badges.Visible = false
+		end
+	end
+})
+
+local HeadAdminBadgeEnabled = false
+GameEditorTab:AddToggle({
+	Name = "HeadAdmin Badge",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			HeadAdminBadgeEnabled = true
+			pcall(function()
+				while HeadAdminBadgeEnabled == true and ScriptEnded == false do
+					wait()
+					if workspace:FindFirstChild(plr.Name) then
+						local char = plr.Character
+						if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.HeadAdmin.Visible == false then
+								char.Head.NameGui.Frame.Badges.HeadAdmin.Visible = true
+							end
+							else
+							    wait(1)
+							    if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.HeadAdmin.Visible == false then
+								char.Head.NameGui.Frame.Badges.HeadAdmin.Visible = true
+							end
+							end
+						end
+					end
+				end
+			end)
+		else
+			HeadAdminBadgeEnabled = false
+			wait()
+			plr.Character.Head.NameGui.Frame.Badges.HeadAdmin.Visible = false
+			plr.Character.Head.NameGui.Frame.Badges.Visible = false
+		end
+	end
+})
+
+local RoyaltyBadgeEnabled = false
+GameEditorTab:AddToggle({
+	Name = "Royalty Badge",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			RoyaltyBadgeEnabled = true
+			pcall(function()
+				while RoyaltyBadgeEnabled == true and ScriptEnded == false do
+					wait()
+					if workspace:FindFirstChild(plr.Name) then
+						local char = plr.Character
+						if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.Royalty.Visible == false then
+								char.Head.NameGui.Frame.Badges.Royalty.Visible = true
+							end
+							else
+							    wait(1)
+							    if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.Royalty.Visible == false then
+								char.Head.NameGui.Frame.Badges.Royalty.Visible = true
+							end
+							end
+						end
+					end
+				end
+			end)
+		else
+			RoyaltyBadgeEnabled = false
+			wait()
+			plr.Character.Head.NameGui.Frame.Badges.Royalty.Visible = false
+			plr.Character.Head.NameGui.Frame.Badges.Visible = false
+		end
+	end
+})
+
+local OOBBadgeEnabled = false
+GameEditorTab:AddToggle({
+	Name = "OOB Badge",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			OOBBadgeEnabled = true
+			pcall(function()
+				while OOBBadgeEnabled == true and ScriptEnded == false do
+					wait()
+					if workspace:FindFirstChild(plr.Name) then
+						local char = plr.Character
+						if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.OOB.Visible == false then
+								char.Head.NameGui.Frame.Badges.OOB.Visible = true
+							end
+							else
+							    wait(1)
+							    if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.OOB.Visible == false then
+								char.Head.NameGui.Frame.Badges.OOB.Visible = true
+							end
+							end
+						end
+					end
+				end
+			end)
+		else
+			OOBBadgeEnabled = false
+			wait()
+			plr.Character.Head.NameGui.Frame.Badges.OOB.Visible = false
+			plr.Character.Head.NameGui.Frame.Badges.Visible = false
+		end
+	end
+})
+
+local OOFBadgeEnabled = false
+GameEditorTab:AddToggle({
+	Name = "OOF Badge",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			OOFBadgeEnabled = true
+			pcall(function()
+				while OOFBadgeEnabled == true and ScriptEnded == false do
+					wait()
+					if workspace:FindFirstChild(plr.Name) then
+						local char = plr.Character
+						if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.OOF.Visible == false then
+								char.Head.NameGui.Frame.Badges.OOF.Visible = true
+							end
+							else
+							    wait(1)
+							    if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.OOF.Visible == false then
+								char.Head.NameGui.Frame.Badges.OOF.Visible = true
+							end
+							end
+						end
+					end
+				end
+			end)
+		else
+			OOFBadgeEnabled = false
+			wait()
+			plr.Character.Head.NameGui.Frame.Badges.OOF.Visible = false
+			plr.Character.Head.NameGui.Frame.Badges.Visible = false
+		end
+	end
+})
+
+local VIPOwnerBadgeEnabled = false
+GameEditorTab:AddToggle({
+	Name = "VIP Owner Badge",
+	Default = false,
+	Callback = function(Value)
+		if Value == true then
+			VIPOwnerBadgeEnabled = true
+			pcall(function()
+				while VIPOwnerBadgeEnabled == true and ScriptEnded == false do
+					wait()
+					if workspace:FindFirstChild(plr.Name) then
+						local char = plr.Character
+						if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.VIPOwner.Visible == false then
+								char.Head.NameGui.Frame.Badges.VIPOwner.Visible = true
+							end
+							else
+							    wait(1)
+							    if char:FindFirstChild("Head") then
+							if char.Head.NameGui.Frame.Badges.Visible == false then
+								char.Head.NameGui.Frame.Badges.Visible = true
+							end
+
+							if char.Head.NameGui.Frame.Badges.VIPOwner.Visible == false then
+								char.Head.NameGui.Frame.Badges.VIPOwner.Visible = true
+							end
+							end
+						end
+					end
+				end
+			end)
+		else
+			VIPOwnerBadgeEnabled = false
+			wait()
+			plr.Character.Head.NameGui.Frame.Badges.VIPOwner.Visible = false
+			plr.Character.Head.NameGui.Frame.Badges.Visible = false
+		end
+	end
+})
+
+--
+
+--Settings
+local SettingsTab = Window:MakeTab({
+	Name = "Settings",
+	Icon = "rbxassetid://10311215044",
+	PremiumOnly = false
+})
+
+SettingsTab:AddLabel("Script Configs")
+
+SettingsTab:AddToggle({
+	Name = "Disable Force Choosing",
+	Default = Data.Disable_Force_Choosing,
+	Callback = function(Value)
+		if Value == true then
+			ForceChoosingDisabled = true
+			Data.Disable_Force_Choosing = true
+		else
+			ForceChoosingDisabled = false
+			Data.Disable_Force_Choosing = false
+		end
+		saveData()
+	end
+})
+
+SettingsTab:AddToggle({
+	Name = "Disable Heavy Attack Spam",
+	Default = Data.Disable_Heavy_Attack_Spam,
+	Callback = function(Value)
+		if Value == true then
+			SpamHeavyAttackDisabled = true
+			Data.Disable_Heavy_Attack_Spam = true
+		else
+			SpamHeavyAttackDisabled = false
+			Data.Disable_Heavy_Attack_Spam = false
+		end
+		saveData()
+	end
+})
+
+SettingsTab:AddToggle({
+	Name = "Disable Anti Fling",
+	Default = Data.Disable_Anti_Fling,
+	Callback = function(Value)
+		if Value == true then
+			AntiFlingDisabled = true
+			Data.Disable_Anti_Fling = true
+		else
+			AntiFlingDisabled = false
+			Data.Disable_Anti_Fling = false
+		end
+		saveData()
+	end
+})
+
+SettingsTab:AddToggle({
+	Name = "Disable Coin Farm",
+	Default = Data.Disable_Coin_Farm,
+	Callback = function(Value)
+		if Value == true then
+			CoinFarmDisabled = true
+			Data.Disable_Coin_Farm = true
+		else
+			CoinFarmDisabled = false
+			Data.Disable_Coin_Farm = false
+		end
+		saveData()
+	end
+})
+
+SettingsTab:AddToggle({
+	Name = "Disable Tree Farm",
+	Default = Data.Disable_Tree_Farm,
+	Callback = function(Value)
+		if Value == true then
+			TreeFarmDisabled = true
+			Data.Disable_Tree_Farm = true
+		else
+			TreeFarmDisabled = false
+			Data.Disable_Tree_Farm = false
+		end
+		saveData()
+	end
+})
+
+SettingsTab:AddToggle({
+	Name = "Disable Bred/Caik Farm",
+	Default = Data.Disable_Bred_Caik_Farm,
+	Callback = function(Value)
+		if Value == true then
+			BredCaikFarmDisabled = true
+			Data.Disable_Bred_Caik_Farm = true
+		else
+			BredCaikFarmDisabled = false
+			Data.Disable_Bred_Caik_Farm = false
+		end
+		saveData()
+	end
+})
+
+SettingsTab:AddToggle({
+	Name = "Disable Target Team",
+	Default = Data.Disable_Target_Team,
+	Callback = function(Value)
+		if Value == true then
+			TargetTeamDisabled = true
+			Data.Disable_Target_Team = true
+		else
+			TargetTeamDisabled = false
+			Data.Disable_Target_Team = false
+		end
+		saveData()
+	end
+})
+
+SettingsTab:AddLabel("Enables")
+
+SettingsTab:AddButton({
+	Name = "End Script",
+	Callback = function()
+		ScriptEnded = true
+		OrionLib:Destroy()
+		saveData()
+	end
+})
+
+OrionLib:Init()
+
+--Yeah idk
+local PlayerCount = 0
+for i,v in pairs(Players:GetPlayers()) do PlayerCount=PlayerCount+1 end
+PlayerCountLabel:Set("Player Count: "..PlayerCount)
+
+Players.PlayerAdded:Connect(function()
+	PlayerCount=PlayerCount+1
+	PlayerCountLabel:Set("Player Count: "..PlayerCount)
+end)
+
+local TimeUsingScriptEvent = Instance.new("BindableEvent")
+TimeUsingScriptEvent.Event:Connect(function()
+	local Seconds = 0
+	local Mins = 0
+	local Hours = 0
+	local Days = 0
+	while wait(1) and ScriptEnded == false do
+		Seconds=Seconds+1
+		if Seconds == 60 then
+			Mins=Mins+1
+			Seconds=0
+		end
+		if Mins == 60 then
+			Hours=Hours+1
+			Mins=0
+		end
+		if Hours == 24 then
+			Days=Days+1
+			Hours=0
+		end
+		if Days == 0 and Hours == 0 and Mins == 0 then
+			TimeUsingScriptLabel:Set("Time Using Script: "..Seconds)
+		elseif Days == 0 and Hours == 0 then
+			TimeUsingScriptLabel:Set("Time Using Script: "..Mins..":"..Seconds)
+		elseif Days == 0 then
+			TimeUsingScriptLabel:Set("Time Using Script: "..Hours..":"..Mins..":"..Seconds)
+		else
+			TimeUsingScriptLabel:Set("Time Using Script: "..Days..":"..Hours..":"..Mins..":"..Seconds)
+		end
+	end
+end)
+TimeUsingScriptEvent:Fire()
